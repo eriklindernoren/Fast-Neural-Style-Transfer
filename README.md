@@ -24,7 +24,7 @@ python3 train.py  --dataset <path-to-dataset> \
  [Trained model](https://drive.google.com/drive/folders/1aRD6zakhcDImN2Y54qAT6f4801iLcCLB?usp=sharing)
 
 ```
-python3 test_on_video.py  --video_path content-images/celtics.gif \
+python3 test_on_video.py  --video_path <path-to-video> \
                           --checkpoint_model model-checkpoints/10000.pth \
 ```
 
