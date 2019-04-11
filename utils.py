@@ -1,9 +1,19 @@
 from torchvision import transforms
+import torch
 import numpy as np
+import av
 
 # Mean and standard deviation used for pre-trained PyTorch models
 mean = np.array([0.485, 0.456, 0.406])
 std = np.array([0.229, 0.224, 0.225])
+
+
+def extract_frames(video_path):
+    """ Extracts frames from video """
+    frames = []
+    video = av.open(video_path)
+    for frame in video.decode(0):
+        yield frame.to_image()
 
 
 def gram_matrix(y):
@@ -28,14 +38,6 @@ def train_transform(image_size):
     return transform
 
 
-def eval_transform(image_size):
-    """ Transforms for evaluation images """
-    transform = transforms.Compose(
-        [transforms.Resize(image_size), transforms.ToTensor(), transforms.Normalize(mean, std)]
-    )
-    return transform
-
-
 def style_transform():
     """ Transforms for style image """
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean, std)])
@@ -47,3 +49,12 @@ def denormalize(tensors):
     for c in range(3):
         tensors[:, c].mul_(std[c]).add_(mean[c])
     return tensors
+
+
+def deprocess(image_tensor):
+    """ Denormalizes and rescales image tensor """
+    image_tensor = denormalize(image_tensor)[0]
+    image_tensor *= 255
+    image_np = torch.clamp(image_tensor, 0, 255).cpu().numpy().astype(np.uint8)
+    image_np = image_np.transpose(1, 2, 0)
+    return image_np

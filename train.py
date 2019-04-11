@@ -53,9 +53,10 @@ if __name__ == "__main__":
     gram_style = [gram_matrix(y) for y in features_style]
 
     # Sample 8 images for visual evaluation of the model
+    transform = transforms.Compose([transforms.Resize(512), transforms.ToTensor(), transforms.Normalize(mean, std)])
     image_samples = []
     for path in random.sample(glob.glob(f"{args.dataset}/*/*.jpg"), 8):
-        image_samples += [eval_transform(image_size=512)(Image.open(path))]
+        image_samples += [transform(image_size=512)(Image.open(path))]
     image_samples = torch.stack(image_samples)
 
     def save_sample(batches_done):
