@@ -103,9 +103,8 @@ class UpsampleConvLayer(torch.nn.Module):
         self.conv2d = torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride)
 
     def forward(self, x):
-        x_in = x
         if self.upsample:
-            x_in = torch.nn.functional.interpolate(x_in, mode="nearest", scale_factor=self.upsample)
-        out = self.reflection_pad(x_in)
-        out = self.conv2d(out)
-        return out
+            x = torch.nn.functional.interpolate(x, mode="nearest", scale_factor=self.upsample)
+        x = self.reflection_pad(x)
+        x = self.conv2d(x)
+        return x

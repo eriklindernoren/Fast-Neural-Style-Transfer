@@ -15,7 +15,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print(args)
 
-    os.makedirs("outputs", exist_ok=True)
+    os.makedirs("images/outputs", exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -36,4 +36,4 @@ if __name__ == "__main__":
 
     # Save image
     fn = args.image_path.split("/")[-1]
-    save_image(stylized_image, f"outputs/stylized-{fn}")
+    save_image(stylized_image, f"images/outputs/stylized-{fn}")

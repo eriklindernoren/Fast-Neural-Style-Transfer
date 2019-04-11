@@ -4,6 +4,12 @@ PyTorch implementation of Fast Neural Style Transfer.
 
 [[Paper](https://cs.stanford.edu/people/jcjohns/eccv16/)] [[Authors' Lua Implementation](https://github.com/jcjohnson/fast-neural-style)]
 
+<p align="center">
+    <img src="assets/zurich.jpg" width="800"\>
+</p>
+
+I have made some trained models available [here](https://drive.google.com/drive/folders/1aRD6zakhcDImN2Y54qAT6f4801iLcCLB?usp=sharing).
+
 ## Train
 
 ```
@@ -20,12 +26,9 @@ python3 train.py  --dataset <path-to-dataset> \
 
 ## Test on Video
 
-
- [Trained model](https://drive.google.com/drive/folders/1aRD6zakhcDImN2Y54qAT6f4801iLcCLB?usp=sharing)
-
 ```
 python3 test_on_video.py  --video_path <path-to-video> \
-                          --checkpoint_model model-checkpoints/10000.pth \
+                          --checkpoint_model <path-to-checkpoint> \
 ```
 
 <p align="center">

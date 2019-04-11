@@ -15,7 +15,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print(args)
 
-    os.makedirs("outputs", exist_ok=True)
+    os.makedirs("images/outputs", exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -37,8 +37,8 @@ if __name__ == "__main__":
         stylized_frames += [deprocess(stylized_image)]
 
     # Create video from frames
-    fn = args.video_path.split("/")[-1].split(".")[0]
-    writer = skvideo.io.FFmpegWriter(f"outputs/stylized-{fn}.gif")
+    video_name = args.video_path.split("/")[-1].split(".")[0]
+    writer = skvideo.io.FFmpegWriter(f"images/outputs/stylized-{video_name}.gif")
     for frame in tqdm.tqdm(stylized_frames, desc="Writing to video"):
         writer.writeFrame(frame)
     writer.close()
