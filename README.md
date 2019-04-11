@@ -6,6 +6,8 @@ PyTorch implementation of Fast Neural Style Transfer.
 
 ## Train
 
+I have uploaded a trained model (on `style-images/mosaic.jpg`) to [[Google Drive](https://drive.google.com/drive/folders/1aRD6zakhcDImN2Y54qAT6f4801iLcCLB?usp=sharing)].
+
 ```
 python3 train.py  --dataset <path-to-dataset> \
                   --style_image <path-to-style-image> \

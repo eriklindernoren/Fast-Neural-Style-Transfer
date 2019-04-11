@@ -56,7 +56,7 @@ if __name__ == "__main__":
     transform = transforms.Compose([transforms.Resize(512), transforms.ToTensor(), transforms.Normalize(mean, std)])
     image_samples = []
     for path in random.sample(glob.glob(f"{args.dataset}/*/*.jpg"), 8):
-        image_samples += [transform(image_size=512)(Image.open(path))]
+        image_samples += [transform(Image.open(path))]
     image_samples = torch.stack(image_samples)
 
     def save_sample(batches_done):
@@ -120,4 +120,5 @@ if __name__ == "__main__":
 
             if args.checkpoint_interval > 0 and batches_done % args.checkpoint_interval == 0:
                 os.makedirs("model-checkpoints", exist_ok=True)
-                torch.save(transformer.state_dict(), f"model-checkpoints/{batches_done}.pth")
+                style_name = os.path.basename(args.style_image).split(".")[0]
+                torch.save(transformer.state_dict(), f"model-checkpoints/{style_name}_{batches_done}.pth")
