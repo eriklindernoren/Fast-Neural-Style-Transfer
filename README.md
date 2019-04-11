@@ -13,7 +13,7 @@ I have made some trained models available [here](https://drive.google.com/drive/
 ## Train
 
 ```
-python3 train.py  --dataset <path-to-dataset> \
+python3 train.py  --dataset_path <path-to-dataset> \
                   --style_image <path-to-style-image> \
                   --epochs 1 \
                   --batch_size 4 \
