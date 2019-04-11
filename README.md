@@ -1,12 +1,12 @@
 # Fast Neural Style Transfer in PyTorch
 
+<p align="center">
+    <img src="assets/zurich.jpg" width="900"\>
+</p>
+
 PyTorch implementation of Fast Neural Style Transfer.
 
 [[Paper](https://cs.stanford.edu/people/jcjohns/eccv16/)] [[Authors' Lua Implementation](https://github.com/jcjohnson/fast-neural-style)]
-
-<p align="center">
-    <img src="assets/zurich.jpg" width="800"\>
-</p>
 
 I have made some trained models available [here](https://drive.google.com/drive/folders/1aRD6zakhcDImN2Y54qAT6f4801iLcCLB?usp=sharing).
 
