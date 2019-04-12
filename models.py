@@ -42,42 +42,21 @@ class TransformerNet(torch.nn.Module):
     def __init__(self):
         super(TransformerNet, self).__init__()
         self.model = nn.Sequential(
-            ConvLayer(3, 32, kernel_size=9, stride=1),
-            nn.InstanceNorm2d(32, affine=True),
-            nn.ReLU(),
-            ConvLayer(32, 64, kernel_size=3, stride=2),
-            nn.InstanceNorm2d(64, affine=True),
-            nn.ReLU(),
-            ConvLayer(64, 128, kernel_size=3, stride=2),
-            nn.InstanceNorm2d(128, affine=True),
-            nn.ReLU(),
+            ConvDownLayer(3, 32, kernel_size=9, factor=1),
+            ConvDownLayer(32, 64, kernel_size=3, factor=2),
+            ConvDownLayer(64, 128, kernel_size=3, factor=2),
             ResidualBlock(128),
             ResidualBlock(128),
             ResidualBlock(128),
             ResidualBlock(128),
             ResidualBlock(128),
-            UpsampleConvLayer(128, 64, kernel_size=3, stride=1, upsample=2),
-            nn.InstanceNorm2d(64, affine=True),
-            nn.ReLU(),
-            UpsampleConvLayer(64, 32, kernel_size=3, stride=1, upsample=2),
-            nn.InstanceNorm2d(32, affine=True),
-            nn.ReLU(),
-            ConvLayer(32, 3, kernel_size=9, stride=1),
+            ConvUpLayer(128, 64, kernel_size=3, factor=2),
+            ConvUpLayer(64, 32, kernel_size=3, factor=2),
+            ConvUpLayer(32, 3, kernel_size=9, stride=1),
         )
 
     def forward(self, x):
         return self.model(x)
-
-
-class ConvLayer(torch.nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride):
-        super(ConvLayer, self).__init__()
-        self.block = nn.Sequential(
-            nn.ReflectionPad2d(kernel_size // 2), nn.Conv2d(in_channels, out_channels, kernel_size, stride)
-        )
-
-    def forward(self, x):
-        return self.block(x)
 
 
 class ResidualBlock(torch.nn.Module):
@@ -95,16 +74,30 @@ class ResidualBlock(torch.nn.Module):
         return self.block(x) + x
 
 
-class UpsampleConvLayer(torch.nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride, upsample=None):
-        super(UpsampleConvLayer, self).__init__()
-        self.upsample = upsample
-        self.reflection_pad = torch.nn.ReflectionPad2d(kernel_size // 2)
-        self.conv2d = torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride)
+class ConvDownLayer(torch.nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size, factor):
+        super(ConvLayer, self).__init__()
+        self.block = nn.Sequential(
+            nn.ReflectionPad2d(kernel_size // 2),
+            nn.Conv2d(in_channels, out_channels, kernel_size, factor),
+            nn.InstanceNorm2d(out_channels, affine=True),
+            nn.ReLU(),
+        )
 
     def forward(self, x):
-        if self.upsample:
-            x = torch.nn.functional.interpolate(x, mode="nearest", scale_factor=self.upsample)
-        x = self.reflection_pad(x)
-        x = self.conv2d(x)
-        return x
+        return self.block(x)
+
+
+class ConvUpLayer(torch.nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size, factor):
+        super(UpsampleConvLayer, self).__init__()
+        self.block = nn.Sequential(
+            nn.Upsample(factor),
+            nn.ReflectionPad2d(kernel_size // 2),
+            nn.Conv2d(in_channels, out_channels, kernel_size),
+            nn.InstanceNorm2d(out_channels, affine=True),
+            nn.ReLU(),
+        )
+
+    def forward(self, x):
+        return self.block(x)
