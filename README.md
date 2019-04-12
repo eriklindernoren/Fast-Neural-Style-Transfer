@@ -4,9 +4,7 @@
     <img src="assets/zurich.jpg" width="900"\>
 </p>
 
-PyTorch implementation of Fast Neural Style Transfer.
-
-[[Paper](https://cs.stanford.edu/people/jcjohns/eccv16/)] [[Authors' Lua Implementation](https://github.com/jcjohnson/fast-neural-style)]
+PyTorch implementation of [Fast Neural Style Transfer](https://cs.stanford.edu/people/jcjohns/eccv16/) ([official Lua implementation](https://github.com/jcjohnson/fast-neural-style)).
 
 I have made some trained models available [here](https://drive.google.com/drive/folders/1aRD6zakhcDImN2Y54qAT6f4801iLcCLB?usp=sharing).
 

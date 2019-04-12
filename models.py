@@ -88,6 +88,6 @@ class ConvBlock(torch.nn.Module):
         x = self.block(x)
         if self.norm is not None:
             x = self.norm(x)
-        if self.relu is not None:
+        if self.relu:
             x = F.relu(x)
         return x
