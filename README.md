@@ -21,6 +21,9 @@ python3 train.py  --dataset_path <path-to-dataset> \
 <p align="center">
     <img src="assets/celeba_mosaic.gif" width="400"\>
 </p>
+<p align="center">
+    Figure: Training progress over the first 10,000 batches.
+</p>
 
 ## Test on Video
 
