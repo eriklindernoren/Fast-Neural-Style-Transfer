@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=1, help="Number of training epochs")
     parser.add_argument("--batch_size", type=int, default=4, help="Batch size for training")
     parser.add_argument("--image_size", type=int, default=256, help="Size of training images")
-    parser.add_argument("--style_size", type=int, default=512, help="Size of style image")
+    parser.add_argument("--style_size", type=int, help="Size of style image")
     parser.add_argument("--lambda_content", type=float, default=1e5, help="Weight for content loss")
     parser.add_argument("--lambda_style", type=float, default=1e10, help="Weight for style loss")
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate")
