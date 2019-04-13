@@ -21,6 +21,9 @@ python3 train.py  --dataset_path <path-to-dataset> \
 <p align="center">
     <img src="assets/celeba_mosaic.gif" width="400"\>
 </p>
+<p align="center">
+    Figure: Training progress over the first 10,000 batches.
+</p>
 
 ## Test on Video
 
@@ -36,6 +39,6 @@ python3 test_on_video.py  --video_path <path-to-video> \
 ## Test on Image
 
 ```
-python3 test_on_video.py  --image_path <path-to-image> \
+python3 test_on_image.py  --image_path <path-to-image> \
                           --checkpoint_model <path-to-checkpoint> \
 ```
