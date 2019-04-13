@@ -39,6 +39,6 @@ python3 test_on_video.py  --video_path <path-to-video> \
 ## Test on Image
 
 ```
-python3 test_on_video.py  --image_path <path-to-image> \
+python3 test_on_image.py  --image_path <path-to-image> \
                           --checkpoint_model <path-to-checkpoint> \
 ```
