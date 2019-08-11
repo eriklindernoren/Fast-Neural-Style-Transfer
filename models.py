@@ -84,7 +84,7 @@ class ConvBlock(torch.nn.Module):
 
     def forward(self, x):
         if self.upsample:
-            x = F.interpolate(x, scale_factor=2)
+            x = F.upsample(x, scale_factor=2)
         x = self.block(x)
         if self.norm is not None:
             x = self.norm(x)

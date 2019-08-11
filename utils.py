@@ -2,11 +2,19 @@ from torchvision import transforms
 import torch
 import numpy as np
 import av
+from math import floor
 
 # Mean and standard deviation used for pre-trained PyTorch models
 mean = np.array([0.485, 0.456, 0.406])
 std = np.array([0.229, 0.224, 0.225])
 
+def scale_factor(image, factor):
+    """ Scales image by a factor """
+    return transforms.Resize(int(floor(min(image.size[0], image.size[1]) * factor)))(image)
+
+def scale_absolute(image, width, height):
+    """ Uniformly scales an image to fit width """
+    return transforms.Resize((height, width))(image)
 
 def extract_frames(video_path):
     """ Extracts frames from video """
@@ -44,6 +52,11 @@ def style_transform(image_size=None):
     transform = transforms.Compose(resize + [transforms.ToTensor(), transforms.Normalize(mean, std)])
     return transform
 
+def square_image(image, image_size=None):
+    """ Returns the largest square from the given image, then resized """
+    if image_size:
+        image = transforms.Resize(image_size)(image)
+    return transforms.CenterCrop(min(image.size[0], image.size[1]))(image)
 
 def denormalize(tensors):
     """ Denormalizes image tensors using mean and std """

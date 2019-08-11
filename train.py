@@ -16,11 +16,13 @@ from utils import *
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Parser for Fast-Neural-Style")
     parser.add_argument("--dataset_path", type=str, required=True, help="path to training dataset")
-    parser.add_argument("--style_image", type=str, default="style-images/mosaic.jpg", help="path to style image")
+    parser.add_argument("--style_image", type=str, required=True, help="path to style image")
     parser.add_argument("--epochs", type=int, default=1, help="Number of training epochs")
+    parser.add_argument("--iters", type=int, default=10000, help="Number of iterations per epoch")
     parser.add_argument("--batch_size", type=int, default=4, help="Batch size for training")
     parser.add_argument("--image_size", type=int, default=256, help="Size of training images")
     parser.add_argument("--style_size", type=int, help="Size of style image")
+    parser.add_argument("--image_type", type=str, help="Extension of images. eg. 'jpg' or 'png'")
     parser.add_argument("--lambda_content", type=float, default=1e5, help="Weight for content loss")
     parser.add_argument("--lambda_style", type=float, default=1e10, help="Weight for style loss")
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate")
@@ -61,8 +63,8 @@ if __name__ == "__main__":
 
     # Sample 8 images for visual evaluation of the model
     image_samples = []
-    for path in random.sample(glob.glob(f"{args.dataset_path}/*/*.png"), 8):
-        image_samples += [style_transform(args.image_size)(Image.open(path))]
+    for path in random.sample(glob.glob(f"{args.dataset_path}/*/*.{args.image_type}"), 8):
+        image_samples += [style_transform()(square_image(Image.open(path), args.image_size))]
     image_samples = torch.stack(image_samples)
 
     def save_sample(batches_done):
@@ -72,6 +74,7 @@ if __name__ == "__main__":
             output = transformer(image_samples.to(device))
         image_grid = denormalize(torch.cat((image_samples.cpu(), output.cpu()), 2))
         save_image(image_grid, f"images/outputs/{style_name}-training/{batches_done}.jpg", nrow=4)
+        save_image(image_grid, f"images/outputs/{style_name}-training/latest.jpg", nrow=4)
         transformer.train()
 
     for epoch in range(args.epochs):
@@ -124,6 +127,9 @@ if __name__ == "__main__":
             if batches_done % args.sample_interval == 0:
                 save_sample(batches_done)
 
-            if args.checkpoint_interval > 0 and batches_done % args.checkpoint_interval == 0:
+            if (args.checkpoint_interval > 0 and batches_done % args.checkpoint_interval == 0) or batch_i == args.iters:
                 style_name = os.path.basename(args.style_image).split(".")[0]
                 torch.save(transformer.state_dict(), f"checkpoints/{style_name}_{batches_done}.pth")
+
+            if batch_i == args.iters:
+                break

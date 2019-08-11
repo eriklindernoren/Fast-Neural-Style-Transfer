@@ -1,0 +1,12 @@
+__pycache__/
+/images/outputs/
+/checkpoints/
+/models/
+
+/images/content/*
+!/images/content/zurich.jpeg
+
+/images/styles/*
+!/images/styles/cuphead.jpg
+!/images/styles/mosaic.jpg
+!/images/styles/starry_night.jpg
