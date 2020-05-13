@@ -27,7 +27,7 @@ if __name__ == "__main__":
     transformer.eval()
 
     # Prepare input
-    image_tensor = Variable(transform(Image.open(args.image_path))).to(device)
+    image_tensor = Variable(transform(Image.open(args.image_path).convert('RGB'))).to(device)
     image_tensor = image_tensor.unsqueeze(0)
 
     # Stylize image
